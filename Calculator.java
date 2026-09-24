@@ -19,7 +19,7 @@ public class Calculator {
 
     public int add (int d, int c) {
 
-        if (this.currency.equals("usd")) {
+        if (this.currency.equals("CZ")) {
             // ....
         }
 
