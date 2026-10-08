@@ -22,8 +22,8 @@ public class Main {
         OwnerFactory ownerFactory = new OwnerFactory();
 
 
-        // new Owner(name, lastName);
-        Owner owner = ownerFactory.createAccountOwner("Tomas", "Pesek");
+
+        Owner owner = ownerFactory.createAccountOwner("Matous", "Kunvalsky");
 
         List<BankAccount> accounts = new ArrayList<>();
 
@@ -44,7 +44,7 @@ public class Main {
 
             if (account instanceof StudentAccount) {
                 StudentAccount overrideAccount = (StudentAccount) account;
-                System.out.println("school: " + overrideAccount.getSchool());
+                System.out.println("skola: " + overrideAccount.getSchool());
             }
         }
 
@@ -59,8 +59,7 @@ public class Main {
         transferService.withdraw(creditCard,100);
 
 
-        // transferService.withdraw(bankAccount, 500);
-        // transferService.withdraw(bankAccount,500);
+
         // transferService.withdraw(bankAccount,500);
 
 

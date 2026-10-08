@@ -12,6 +12,10 @@ public class TransferService {
 
     Notifier notifier = new ConsoleNotifier();
 
+
+    private TransferLoggerService loggerService = new TransferLoggerService();
+    private TransactionFactory transactionFactory = new TransactionFactory();
+
     public void withdraw(Withdraw withdrawObject, double amount) {
 
         this.notifier.notify("Sub amount is " + amount);
@@ -23,12 +27,20 @@ public class TransferService {
         }
 
         withdrawObject.setNewBalance(newBalance);
+
+        // pouziti service pro zalogovani Vyberu
+        Transaction t = transactionFactory.createTransaction("WITHDRAW", amount);
+        loggerService.logTransaction(t);
     }
 
     public void addToBalance(Withdraw withdrawObject, double amount) {
         double newBalance = this.calculateNewBalance(withdrawObject, amount);
 
         withdrawObject.setNewBalance(newBalance);
+
+        // dalsi pouziti service pro zalogovani Vkladu
+        Transaction t = transactionFactory.createTransaction("DEPOSIT", amount);
+        loggerService.logTransaction(t);
     }
 
     private double calculateNewBalance(Withdraw withdrawObject, double amount) {
