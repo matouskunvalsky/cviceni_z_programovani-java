@@ -19,7 +19,7 @@ class TransferServiceTest {
     @BeforeEach
     public void setUp() {
         transferService = new TransferService();
-        owner = new Owner("Jan", "Novak");
+        owner = new Owner("Zdenek", "Slezak");
     }
 
     @Test

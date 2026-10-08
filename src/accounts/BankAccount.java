@@ -34,6 +34,11 @@ public abstract class BankAccount implements Withdraw {
         return balance;
     }
 
+    public String getAccountNumber()
+    {
+        return accountNumber;
+    }
+
     public void sub(double amount) {
         this.notifier.notify("Sub amount is " + amount);
         System.out.println("Sub amount is " + amount);
