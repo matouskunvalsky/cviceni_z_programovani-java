@@ -1,5 +1,7 @@
-package accounts;
+package accounts.factories;
 
+import accounts.BankAccount;
+import accounts.SavingAccount;
 import people.Owner;
 
 import java.util.UUID;

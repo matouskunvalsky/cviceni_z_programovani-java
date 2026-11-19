@@ -16,7 +16,6 @@ public class BankAccountJsonSerializationService {
         for(BankAccount bankAccount : bankAccounts) {
             builder.append(serialize(bankAccount));
 
-            // TODO if is not last item
             builder.append(",");
         }
 
@@ -29,7 +28,7 @@ public class BankAccountJsonSerializationService {
 
         BankAccountSerialize bankAccountSerialize = bankAccountSerializeFactory.createBankAccountSerialize(bankAccount);
 
-        // TODO make json string
+
         StringBuilder builder = new StringBuilder();
 
         builder.append("{");

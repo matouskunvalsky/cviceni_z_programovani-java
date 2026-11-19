@@ -4,7 +4,7 @@ import accounts.InterestPoint;
 import accounts.StudentAccount;
 import creditCards.CreditCard;
 import people.Owner;
-import people.OwnerFactory;
+import people.factories.OwnerFactory;
 import transfers.TransferService;
 
 import java.util.ArrayList;

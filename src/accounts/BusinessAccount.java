@@ -11,4 +11,5 @@ public class BusinessAccount extends BankAccount {
     public BusinessAccount(Owner owner, double balance) {
         super(owner, balance);
     }
+
 }

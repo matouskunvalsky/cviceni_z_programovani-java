@@ -1,10 +1,13 @@
 package accounts;
 
-import notifiers.ConsoleNotifier;
 import notifiers.EmailNotifier;
 import notifiers.Notifier;
 import people.Owner;
 import transfers.Withdraw;
+
+import java.util.UUID;
+
+// kod banky  2010
 
 public abstract class BankAccount implements Withdraw {
 
@@ -16,9 +19,8 @@ public abstract class BankAccount implements Withdraw {
 
     protected double balance;
 
-    protected Notifier notifier = new EmailNotifier();
 
-    public BankAccount(String uuid, String accountNumber, Owner owner) {}
+
 
     public BankAccount(Owner owner) {
         this.owner = owner;
@@ -30,36 +32,25 @@ public abstract class BankAccount implements Withdraw {
         this.balance = balance;
     }
 
-    public double getBalance() {
-        return balance;
-    }
-
-    public String getAccountNumber()
-    {
-        return accountNumber;
-    }
-
-    public void sub(double amount) {
-        this.notifier.notify("Sub amount is " + amount);
-        System.out.println("Sub amount is " + amount);
-
-        double newBalance = balance - amount;
-
-        if (newBalance < 0) {
-            throw new RuntimeException("Balance is negative");
-        }
-
-        this.balance = newBalance;
-    }
-
-    public void add(double amount) {
-        System.out.println("Add amount is " + amount);
-
-        this.balance = this.balance + amount;
-    }
-
     @Override
     public void setNewBalance(double balance) {
         this.balance = balance;
+    }
+
+    @Override
+    public double getBalance() {
+        return this.balance;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    public void setAccountNumber(String accountNumber) {
+        this.accountNumber = accountNumber;
+    }
+
+    public String getAccountNumber() {
+        return accountNumber;
     }
 }
