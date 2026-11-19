@@ -2,7 +2,6 @@ package transfers;
 
 import accounts.BusinessAccount;
 import accounts.StudentAccount;
-import notifiers.ConsoleNotifier;
 import notifiers.Notifier;
 
 public class TransferService {
@@ -10,14 +9,21 @@ public class TransferService {
     private static final float BUSINESS_ACCOUNT_SUB_FEE = 0.1f;
     private static final float STUDENT_ACCOUNT_LIMIT = -5000;
 
-    Notifier notifier = new ConsoleNotifier();
+    private final Notifier notifier;
+    private final TransferLoggerService loggerService;
+    private final TransactionFactory transactionFactory;
 
-
-    private TransferLoggerService loggerService = new TransferLoggerService();
-    private TransactionFactory transactionFactory = new TransactionFactory();
+    public TransferService(
+            Notifier notifier,
+            TransferLoggerService loggerService,
+            TransactionFactory transactionFactory
+    ) {
+        this.notifier = notifier;
+        this.loggerService = loggerService;
+        this.transactionFactory = transactionFactory;
+    }
 
     public void withdraw(Withdraw withdrawObject, double amount) {
-
         this.notifier.notify("Sub amount is " + amount);
 
         double newBalance = this.calculateNewBalance(withdrawObject, amount);
@@ -28,7 +34,6 @@ public class TransferService {
 
         withdrawObject.setNewBalance(newBalance);
 
-        // pouziti service pro zalogovani Vyberu
         Transaction t = transactionFactory.createTransaction("WITHDRAW", amount);
         loggerService.logTransaction(t);
     }
@@ -38,7 +43,6 @@ public class TransferService {
 
         withdrawObject.setNewBalance(newBalance);
 
-        // dalsi pouziti service pro zalogovani Vkladu
         Transaction t = transactionFactory.createTransaction("DEPOSIT", amount);
         loggerService.logTransaction(t);
     }
@@ -54,7 +58,6 @@ public class TransferService {
     }
 
     private double getWithdrawLimit(Withdraw withdrawObject) {
-
         if (withdrawObject instanceof StudentAccount) {
             return STUDENT_ACCOUNT_LIMIT;
         }

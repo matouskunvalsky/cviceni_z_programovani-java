@@ -9,11 +9,16 @@ public class AccountNumberGenerator {
     private static final int[] WEIGHTS = {6, 3, 7, 9, 10, 5, 8, 4, 2, 1};
 
     private final String bankCode;
-    private final Random random = new Random();
+    private final Random random;
     private final Set<String> issuedNumbers = new HashSet<>();
 
     public AccountNumberGenerator(String bankCode) {
+        this(bankCode, new Random());
+    }
+
+    public AccountNumberGenerator(String bankCode, Random random) {
         this.bankCode = bankCode;
+        this.random = random;
     }
 
     public String generate() {

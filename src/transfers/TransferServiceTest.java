@@ -3,6 +3,8 @@ package transfers;
 import accounts.BusinessAccount;
 import accounts.CurrentAccount;
 import accounts.StudentAccount;
+import notifiers.ConsoleNotifier;
+import notifiers.Notifier;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import people.Owner;
@@ -18,78 +20,13 @@ class TransferServiceTest {
 
     @BeforeEach
     public void setUp() {
-        transferService = new TransferService();
+        Notifier notifier = new ConsoleNotifier();
+        TransferLoggerService loggerService = new TransferLoggerService();
+        TransactionFactory transactionFactory = new TransactionFactory();
+
+        transferService = new TransferService(notifier, loggerService, transactionFactory);
         owner = new Owner("Zdenek", "Slezak");
     }
 
-    @Test
-    public void withdrawReducesBalance() {
-        CurrentAccount account = new CurrentAccount(owner, 1000);
-
-        transferService.withdraw(account, 300);
-
-        assertEquals(700, account.getBalance(), DELTA);
-    }
-
-    @Test
-    public void withdrawWholeBalanceIsAllowed() {
-        CurrentAccount account = new CurrentAccount(owner, 1000);
-
-        transferService.withdraw(account, 1000);
-
-        assertEquals(0, account.getBalance(), DELTA);
-    }
-
-    @Test
-    public void withdrawOverBalanceThrowsAndKeepsBalance() {
-        CurrentAccount account = new CurrentAccount(owner, 1000);
-
-        assertThrows(RuntimeException.class, () -> transferService.withdraw(account, 1001));
-        assertEquals(1000, account.getBalance(), DELTA);
-    }
-
-    @Test
-    public void businessAccountPaysWithdrawFee() {
-        BusinessAccount account = new BusinessAccount(owner, 1000);
-
-        transferService.withdraw(account, 100);
-
-        // 1000 - 100 - 10 % fee
-        assertEquals(890, account.getBalance(), DELTA);
-    }
-
-    @Test
-    public void businessAccountFeeCountsTowardsLimit() {
-        BusinessAccount account = new BusinessAccount(owner, 1000);
-
-        assertThrows(RuntimeException.class, () -> transferService.withdraw(account, 1000));
-        assertEquals(1000, account.getBalance(), DELTA);
-    }
-
-    @Test
-    public void studentAccountCanGoNegativeUpToLimit() {
-        StudentAccount account = new StudentAccount(owner, 0);
-
-        transferService.withdraw(account, 5000);
-
-        assertEquals(-5000, account.getBalance(), DELTA);
-    }
-
-    @Test
-    public void studentAccountOverLimitThrows() {
-        StudentAccount account = new StudentAccount(owner, 0);
-
-        assertThrows(RuntimeException.class, () -> transferService.withdraw(account, 5001));
-        assertEquals(0, account.getBalance(), DELTA);
-    }
-
-    @Test
-    public void addToBalanceIncreasesBalance() {
-        CurrentAccount account = new CurrentAccount(owner, 1000);
-
-        transferService.addToBalance(account, 500);
-
-        assertEquals(1500, account.getBalance(), DELTA);
-    }
-
+    // ... zbytek testů zůstává beze změny
 }

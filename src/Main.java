@@ -1,69 +1,31 @@
 import accounts.BankAccount;
-import accounts.CurrentAccount;
-import accounts.InterestPoint;
-import accounts.StudentAccount;
+import accounts.services.IAccountService;
 import creditCards.CreditCard;
 import people.Owner;
-import people.factories.OwnerFactory;
+import people.services.OwnerService;
 import transfers.TransferService;
-
-import java.util.ArrayList;
-import java.util.List;
-
 
 public class Main {
 
-
-
-
     public static void main(String[] args) {
+        Container container = new Container();
 
-        TransferService transferService = new TransferService();
-        OwnerFactory ownerFactory = new OwnerFactory();
+        OwnerService ownerService = container.getOwnerService();
+        IAccountService accountService = container.getAccountService();
+        TransferService transferService = container.getTransferService();
 
+        Owner owner = ownerService.createOwner("Matous", "Kunvalsky");
 
+        BankAccount bankAccount = accountService.createCurrentAccount(owner, 1000);
+        BankAccount studentAccount = accountService.createStudentAccount(owner, 100, "DELTA");
 
-        Owner owner = ownerFactory.createAccountOwner("Matous", "Kunvalsky");
-
-        List<BankAccount> accounts = new ArrayList<>();
-
-        BankAccount bankAccount = new CurrentAccount(owner, 1000);
-        accounts.add(bankAccount);
-
-        BankAccount studentAccount = new StudentAccount(owner, 100);
-        accounts.add(studentAccount);
-
-        for (BankAccount account : accounts) {
-            if (account instanceof InterestPoint) {
-                ((InterestPoint)account).calculateInterest();
-            }
-        }
-
-
-        for (BankAccount account : accounts) {
-
-            if (account instanceof StudentAccount) {
-                StudentAccount overrideAccount = (StudentAccount) account;
-                System.out.println("skola: " + overrideAccount.getSchool());
-            }
-        }
+        System.out.println("Cislo uctu: " + bankAccount.getAccountNumber());
 
         transferService.withdraw(bankAccount, 500);
-        transferService.addToBalance(bankAccount,300);
-        transferService.addToBalance(bankAccount,100);
+        transferService.addToBalance(bankAccount, 300);
         System.out.println("balance: " + bankAccount.getBalance());
-
 
         CreditCard creditCard = new CreditCard(owner, 500);
-        transferService.addToBalance(creditCard,1000);
-        transferService.withdraw(creditCard,100);
-
-
-
-        // transferService.withdraw(bankAccount,500);
-
-
-
-        System.out.println("balance: " + bankAccount.getBalance());
+        transferService.withdraw(creditCard, 100);
     }
 }
